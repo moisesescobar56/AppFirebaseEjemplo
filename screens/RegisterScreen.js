@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Layout, Input, ButtonRounded } from '../components';
+import { Layout, Input, ButtonRounded, Select } from '../components';
+import { Alert } from 'react-native';
+import { useAuth } from '../context/AuthContext';
+
+const GENEROS = [
+  { label: "Femenino", value: "Femenino" },
+  { label: "Masculino", value: "Masculino" },
+];
 
 export default function RegisterScreen({ navigation }){
     const [nombre, setNombre] = useState('');
@@ -7,6 +14,39 @@ export default function RegisterScreen({ navigation }){
     const [email, setEmail] = useState('');
     const [clave, setClave] = useState('');
     const [confirmarClave, setConfirmarClave] = useState('');
+    const { register } = useAuth();
+
+    async function registrar() {
+        //validar
+        if (!nombre || !genero || !email || !clave || !confirmarClave) {
+          Alert.alert( "Error", "Por favor, completa todos los campos obligatorios." );
+          return;
+        }
+        // Confirmar claves
+        if (clave != confirmarClave) {
+          Alert.alert( "Error", "Las contraseñas no coinciden" );
+          return;
+        }
+
+        try {
+          const data = {
+            nombre: nombre,
+            genero: genero,
+          };
+          await register(email, clave, data);
+
+        } catch (error) {
+            console.error(error);
+            if (error.code === "auth/email-already-in-use") {
+                Alert.alert("Este correo electrónico ya está en uso.");
+            } else if (error.code === "auth/weak-password") {
+                Alert.alert("La contraseña debe tener al menos 6 caracteres.");
+            } else {
+                Alert.alert("Error al registrar la cuenta.");
+            }
+        }
+
+    }
 
     return (
         <Layout>
@@ -16,12 +56,18 @@ export default function RegisterScreen({ navigation }){
                 type="default"
                 value={nombre}
                 onChangeText={setNombre} />
-            <Input 
+            {/* <Input 
                 label="Genero"
                 placeholder="Femenino/Masculino"
                 type="default"
                 value={genero}
-                onChangeText={setGenero} />                  
+                onChangeText={setGenero} />                   */}
+            <Select
+                label="Seleccionar genero"
+                options={GENEROS}
+                initialValue={genero} // valor inicial
+                onSelect={setGenero} // actualizar seleccion
+            /> 
             <Input 
                 label="Correo electronico"
                 placeholder="codigo@esfe.agape.edu.sv"
@@ -40,8 +86,8 @@ export default function RegisterScreen({ navigation }){
                 hideText={true}
                 value={confirmarClave}
                 onChangeText={setConfirmarClave} />
-            <ButtonRounded title="Confirmar" />    
-            <ButtonRounded title="Iniciar sesion" isPrimary={false} />    
+            <ButtonRounded title="Confirmar" onPress={registrar} />    
+            <ButtonRounded title="Iniciar sesion" isPrimary={false} onPress={() => navigation.popToTop() } />    
         </Layout>
     );
 }

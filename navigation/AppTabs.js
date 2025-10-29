@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 // importar screens de los tabs
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from  '../screens/RegisterScreen';
+import NewScreen from '../screens/NewScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 // crear tabs
 const Tab = createBottomTabNavigator();
@@ -22,9 +22,9 @@ export default function AppTabs() {
           tabBarIcon: ({ color, size, focused }) => {
             let iconName;
 
-            if (route.name === 'Login') {
-              iconName = focused ? 'key' : 'key-outline'; // LoginScreen Icon
-            } else if (route.name === 'Register') {
+            if (route.name === 'New') {
+              iconName = focused ? 'newspaper' : 'newspaper-outline'; // LoginScreen Icon
+            } else if (route.name === 'Profile') {
               iconName = focused ? 'person' : 'person-outline'; // RegisterScreen Icon
             }
 
@@ -32,8 +32,8 @@ export default function AppTabs() {
           },
         })}  
     >
-      <Tab.Screen name="Login" component={LoginScreen} options={{ title: "Iniciar sesión" }} />
-      <Tab.Screen name="Register" component={RegisterScreen} options={{ title: "Registrarse" }} />
+      <Tab.Screen name="New" component={NewScreen} options={{ title: "Noticias" }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: "Perfil" }} />
     </Tab.Navigator>
   );
 }

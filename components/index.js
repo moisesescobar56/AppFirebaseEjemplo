@@ -1,4 +1,5 @@
 export { default as Layout } from './Layout'; 
 export { default as Input } from './Input'; 
 export { default as ButtonRounded } from './ButtonRounded'; 
-export {default as SearchControl } from './SearchControl';
+export {default as SearchBar } from './SearchBar';
+export {default as Select } from './Select';

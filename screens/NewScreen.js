@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Layout, Input, ButtonRounded, SearchControl } from "../components";
+import { Layout, Input, ButtonRounded, SearchBar } from "../components";
 import { FlatList, Text, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
 import { obtenerNoticias, formatDate } from "../services/newService";
 
@@ -11,13 +11,9 @@ export default function NewScreen({ navigation }) {
   async function buscar() {
     try {
       setLoading(true);
-      if (!titulo) {
-        const lista = await obtenerNoticias();
-        setDatos(lista);
-      } else {
-        const lista = await obtenerNoticias(titulo);
-        setDatos(lista);
-      }
+
+      const lista = await obtenerNoticias(titulo);
+      setDatos(lista);
     } catch (error) {
       console.error(error);
     } finally {
@@ -52,7 +48,7 @@ export default function NewScreen({ navigation }) {
         renderItem={renderItem}
         keyExtractor={(x) => x.id}
         ListHeaderComponent={
-          <SearchControl text={titulo} setText={setTitulo} onPress={buscar} />
+          <SearchBar text={titulo} setText={setTitulo} onSearch={buscar} />
         }
       />
     </Layout>
