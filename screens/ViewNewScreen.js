@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Layout, Input, ButtonRounded } from '../components';
 import { ScrollView, Text, Image, ActivityIndicator, StyleSheet } from "react-native";
-import { obtenerNoticiaPorId } from "../services/newService";
+// import { obtenerNoticiaPorId } from "../services/newService";
 
 
 export default function ViewNewScreen({route}){
-    const { id } = route.params;
+    // const { id } = route.params;
+    const { noticia } = route.params;
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -19,20 +20,22 @@ export default function ViewNewScreen({route}){
     }
 
     useEffect(() => {
-        const load = async () => {
-            try {
-                setLoading(true);
-                const obj = await obtenerNoticiaPorId(id);
-                setItem(obj);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
+        // const load = async () => {
+        //     try {
+        //         setLoading(true);
+        //         const obj = await obtenerNoticiaPorId(id);
+        //         setItem(obj);
+        //     } catch (error) {
+        //         console.error(error);
+        //     } finally {
+        //         setLoading(false);
+        //     }
+        // }
 
-        load();
-    }, [id]);
+        // load();
+        setItem(noticia);
+        setLoading(false);
+    }, []);
 
     if(loading) return <ActivityIndicator style={{ flex: 1 }} />;
 

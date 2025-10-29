@@ -30,16 +30,18 @@ export default function NewScreen({ navigation }) {
   }, []);
 
   // presentacion
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate("ViewNew", { id: item.id })}
+  function renderItem({item}) {
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => navigation.navigate("ViewNew", { noticia: item })}
       >
-      <Image style={styles.image} source={{ uri: item.imagenUrl }} />
-      <Text style={styles.title}>{item.titulo}</Text>
-      <Text style={styles.date}>{formatDate(item.fechaHora)}</Text>
-    </TouchableOpacity>
-  );
+        <Image style={styles.image} source={{ uri: item.imagenUrl }} />
+        <Text style={styles.title}>{item.titulo}</Text>
+        <Text style={styles.date}>{formatDate(item.fechaHora)}</Text>
+      </TouchableOpacity>
+    );
+  }
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} />;
 
@@ -49,7 +51,9 @@ export default function NewScreen({ navigation }) {
         data={datos}
         renderItem={renderItem}
         keyExtractor={(x) => x.id}
-        ListHeaderComponent={ <SearchControl text={titulo} setText={setTitulo} onPress={buscar} /> }
+        ListHeaderComponent={
+          <SearchControl text={titulo} setText={setTitulo} onPress={buscar} />
+        }
       />
     </Layout>
   );
